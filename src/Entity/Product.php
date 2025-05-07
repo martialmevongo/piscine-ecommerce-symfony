@@ -33,19 +33,9 @@ class Product
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'products')]
-    private ?self $category = null;
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    private ?Category $category = null;
 
-    /**
-     * @var Collection<int, self>
-     */
-    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'category')]
-    private Collection $products;
-
-    public function __construct()
-    {
-        $this->products = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -124,45 +114,18 @@ class Product
         return $this;
     }
 
-    public function getCategory(): ?self
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
 
-    public function setCategory(?self $category): static
+    public function setCategory(?Category $category): static
     {
         $this->category = $category;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, self>
-     */
-    public function getProducts(): Collection
-    {
-        return $this->products;
-    }
+   
 
-    public function addProduct(self $product): static
-    {
-        if (!$this->products->contains($product)) {
-            $this->products->add($product);
-            $product->setCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProduct(self $product): static
-    {
-        if ($this->products->removeElement($product)) {
-            // set the owning side to null (unless already changed)
-            if ($product->getCategory() === $this) {
-                $product->setCategory(null);
-            }
-        }
-
-        return $this;
-    }
 }
