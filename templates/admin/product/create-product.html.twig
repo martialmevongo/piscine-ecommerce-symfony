@@ -1,3 +1,6 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block main %}
 
 <h1>Créer un produit</h1>
 
@@ -11,23 +14,26 @@
 	</label>
 
 	<label for="price">Prix
-		<input type="number" name="price">
+		<input type="number" name="price" step="0.01">
 	</label>
 
 	<label for="is-published">Publié ?
 		<input type="checkbox" name="is-published">
 	</label>
 
+	<label for="created_at">Date de création
+		<input type="datetime-local" name="created_at">
+	</label>
 
-	<select name="category-id">
+	<label for="category-id">Catégorie
+		<select name="category-id">
+			{% for category in categories %}
+				<option value="{{ category.id }}">{{ category.title }}</option>
+			{% endfor %}
+		</select>
+	</label>
 
-		{% for category in categories %}
-			<option value="{{ category.id }}">{{ category.title }}</option>
-		{% endfor %}
-	
-	</select>
-
-	<button type="submit">Créer le produit</button>
-
-
+	<button type="submit">Créer</button>
 </form>
+
+{% endblock %}

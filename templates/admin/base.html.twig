@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>	{% block metatitle %}{% endblock %}</title>
+</head>
+<body>
+
+<header>
+
+	<img src="https://www.zarla.com/images/zarla-lectrodomus-1x1-2400x2400-20220705-fpbcpwwcrtjpwtr7kvy9.png?crop=1:1,smart&width=250&dpr=2" alt="electro ménager piscine logo">
+
+	<nav>
+
+		<ul>
+			<li><a href="{{path('admin-create-product')}}">Créer un produit</a></li>
+		</ul>
+
+	</nav>
+
+</header>
+
+{% for message in app.flashes('error') %}
+
+	<div style="background-color: red;">
+		<p>{{ message }} </p>
+	</div>
+
+{% endfor %}
+	
+
+<main>
+
+	{% block main %}
+	{% endblock %}
+
+</main>
+
+</body>
+</html>

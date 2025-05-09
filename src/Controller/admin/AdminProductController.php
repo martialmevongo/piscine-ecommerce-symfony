@@ -3,7 +3,9 @@
 
 namespace App\Controller\admin;
 
+use App\Entity\Product;
 use App\Repository\CategoryRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,7 +14,7 @@ class AdminProductController extends AbstractController {
 
 
 	#[Route('/admin/create-product', name: 'admin-create-product')]
-	public function displayCreateProduct(CategoryRepository $categoryRepository, Request $request) {
+	public function displayCreateProduct(CategoryRepository $categoryRepository, Request $request, EntityManagerInterface $entityManager) {
 
 
 		if ($request->isMethod('POST')) {
@@ -28,7 +30,18 @@ class AdminProductController extends AbstractController {
 				$isPublished = false;
 			}
 
-			
+			$category = $categoryRepository->find($categoryId);
+
+			try {
+				$product = new Product($title, $description, $price, $isPublished, $category);
+
+				$entityManager->persist($product);
+				$entityManager->flush();
+			} catch (\Exception $exception) {
+				$this->addFlash('error', $exception->getMessage());
+			}
+
+
 		}
 
 		$categories = $categoryRepository->findAll();
@@ -36,9 +49,5 @@ class AdminProductController extends AbstractController {
 		return $this->render('admin/product/create-product.html.twig', [
 			'categories' => $categories
 		]);
-
-
 	}
-
-
 }

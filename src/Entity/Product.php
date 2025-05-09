@@ -6,6 +6,7 @@ use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
@@ -35,6 +36,23 @@ class Product
 
     #[ORM\Column]
     private ?float $price = null;
+
+    public function __construct($title, $description, $price, $isPublished, $category) {
+
+        if (strlen($title) < 3) {
+            throw new Exception('Le titre doit faire plus de 3 caractères');
+        }
+
+
+        $this->title = $title;
+        $this->description = $description;
+        $this->price = $price;
+        $this->isPublished = $isPublished;
+        $this->category = $category;
+
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+    }
 
 
     public function getId(): ?int
