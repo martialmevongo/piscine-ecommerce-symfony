@@ -1,0 +1,18 @@
+{% extends 'guest/base.html.twig' %}
+
+{% block metatitle %}
+	ElectroMénager | Détails de {{ category.title }}
+{% endblock metatitle %}
+
+
+{% block main %}
+	
+	<article style="border: 1px, solid, {{ category.color }};">
+
+		<h1>Categorie : {{ category.title }}</h1>
+		<p>{{ category.description }}</p>
+		<p>Créé le {{ category.createdAt | date('d-m-Y') }}
+
+	</article>
+
+{% endblock main %}

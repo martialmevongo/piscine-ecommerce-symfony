@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>	{% block metatitle %}{% endblock %}</title>
+</head>
+<body>
+
+<header>
+
+	<img src="https://www.zarla.com/images/zarla-lectrodomus-1x1-2400x2400-20220705-fpbcpwwcrtjpwtr7kvy9.png?crop=1:1,smart&width=250&dpr=2" alt="electro ménager piscine logo">
+
+	<nav>
+
+		<ul>
+			<li><a href="{{path('home')}}">Accueil</a></li>
+			<li><a href="{{path('list-categories')}}">Catégories</a></li>
+			<li><a href="{{path('list-products')}}">Produits</a></li>
+		</ul>
+
+	</nav>
+
+</header>
+	
+
+<main>
+
+	{% block main %}
+	{% endblock %}
+
+</main>
+
+</body>
+</html>
