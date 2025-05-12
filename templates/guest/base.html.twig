@@ -1,35 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>	{% block metatitle %}{% endblock %}</title>
-</head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block metatitle %}{% endblock %}</title>
+  <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" type="text/css" />
 <body>
 
-<header>
+  <header>
+    <div class="header-container">
+      <img
+        class="logo"
+        src="https://th.bing.com/th/id/OIP.arQQnBm2AgHC85pORiJEhgHaE8?rs=1&pid=ImgDetMain"
+        alt="Logo Électroménager Piscine"
+      >
+      
+      <nav>
+        <ul>
+          <li><a href="{{ path('home') }}">Accueil</a></li>
+          <li><a href="{{ path('list-categories') }}">Catégories</a></li>
+          <li><a href="{{ path('list-products') }}">Produits</a></li>
+        </ul>
+		<p> connecter en tant que test@test.fr </p>
+      </nav>
+    </div>
+  </header>
 
-	<img src="https://graphicsfamily.com/wp-content/uploads/edd/2021/08/E-Commerce-Logo-Design-scaled.jpg" alt="electro ménager piscine logo">
-
-	<nav>
-
-		<ul>
-			<li><a href="{{path('home')}}">Accueil</a></li>
-			<li><a href="{{path('list-categories')}}">Catégories</a></li>
-			<li><a href="{{path('list-products')}}">Produits</a></li>
-		</ul>
-
-	</nav>
-
-</header>
-	
-
-<main>
-
-	{% block main %}
-	{% endblock %}
-
-</main>
+  <main>
+    {% block main %}
+    {% endblock %}
+  </main>
 
 </body>
 </html>
