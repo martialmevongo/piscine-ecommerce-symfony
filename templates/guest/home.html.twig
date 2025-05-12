@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Accueil</title>
-    
-</head>
-<body>
-    <div class="container">
-        <h1>Bienvenue sur mon ecommerce !</h1>
-    </div>
-</body>
+{% extends 'guest/base.html.twig' %}
+
+{% block metatitle %}
+	ElectroMénager | Accueil
+{% endblock metatitle %}
+
+{% block main %}
+	<h1>Achetez des produits made in La Piscine</h1>
+{% endblock main %}

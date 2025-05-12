@@ -77,4 +77,18 @@ class AdminProductController extends AbstractController {
 
 	}
 
+    #[Route('/admin/update-product/{id}', name: 'admin-update-product')]
+	public function displayUpdateProduct($id, ProductRepository $productRepository, CategoryRepository $categoryRepository) {
+
+		$product = $productRepository->find($id);
+
+		$categories = $categoryRepository->findAll();
+
+		return $this->render('admin/product/update-product.html.twig', [
+			'categories' => $categories,
+			'product' => $product
+		]);
+	}
+
+
 }
