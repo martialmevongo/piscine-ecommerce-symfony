@@ -63,7 +63,8 @@ class AdminProductController extends AbstractController {
 		]);
 	}
 
-    #[Route('/admin/delete-product/{id}', name:'admin-delete-product')]
+
+	#[Route('/admin/delete-product/{id}', name:'admin-delete-product')]
 	public function deleteProduct($id, ProductRepository $productRepository, EntityManagerInterface $entityManager) {
 		
 		$product = $productRepository->find($id);
@@ -74,10 +75,9 @@ class AdminProductController extends AbstractController {
 		$this->addFlash('success', 'Produit supprimé !');
 
 		return $this->redirectToRoute('admin-list-products');
-
 	}
 
-    #[Route('/admin/update-product/{id}', name: 'admin-update-product')]
+	#[Route('/admin/update-product/{id}', name: 'admin-update-product')]
 	public function displayUpdateProduct($id, ProductRepository $productRepository, CategoryRepository $categoryRepository, Request $request, EntityManagerInterface $entityManager) {
 
 		$product = $productRepository->find($id);
