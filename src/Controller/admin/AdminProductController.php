@@ -78,9 +78,45 @@ class AdminProductController extends AbstractController {
 	}
 
     #[Route('/admin/update-product/{id}', name: 'admin-update-product')]
-	public function displayUpdateProduct($id, ProductRepository $productRepository, CategoryRepository $categoryRepository) {
+	public function displayUpdateProduct($id, ProductRepository $productRepository, CategoryRepository $categoryRepository, Request $request, EntityManagerInterface $entityManager) {
 
 		$product = $productRepository->find($id);
+
+		if ($request->isMethod('POST')) {
+
+			$title = $request->request->get('title');			
+			$description = $request->request->get('description');
+			$price = $request->request->get('price');
+			$categoryId = $request->request->get('category-id');
+			
+			if ($request->request->get('is-published') === 'on') {
+				$isPublished = true;
+			} else {
+				$isPublished = false;
+			}
+
+			$category = $categoryRepository->find($categoryId);
+
+			// méthode 1 : modifier les données d'un produit avec les fonctions setters
+			//$product->setTitle($title);
+			//$product->setDescription($description);
+			//$product->setPrice($price);
+			//$product->setIsPublished($isPublished);
+			//$product->setcategory($category);
+			//$product->setUpdatedAt(new \DateTime())
+
+			// méthode 2 : modifier les données d'un produit avec une fonction update dans l'entité
+
+			try {
+				$product->update($title, $description, $price, $isPublished, $category);	
+
+				$entityManager->persist($product);
+				$entityManager->flush();
+			} catch (\Exception $exception) {
+				$this->addFlash('error', $exception->getMessage());
+			}
+
+		}
 
 		$categories = $categoryRepository->findAll();
 
@@ -90,5 +126,28 @@ class AdminProductController extends AbstractController {
 		]);
 	}
 
+
+	/** AUTRE FACON DE GERER LES FORMS AVEC SYMFONY
+	 * #[Route('/admin/create-product-form-sf', name: 'admin-create-product-form-sf')]
+	*public function displayCreateProductFormSf(Request $request, EntityManagerInterface $entityManager) {
+	*
+	*	$product = new Product();
+	*
+	*		$productForm = $this->createForm(ProductForm::class, $product);
+	*	$productForm->handleRequest($request);
+	*
+	*	if ($productForm->isSubmitted()) {
+	*		$product->setCreatedAt(new \DateTime());
+	*		$product->setUpdatedAt(new \DateTime());
+	*
+	*		$entityManager->persist($product);
+	*		$entityManager->flush();
+	*	}
+	*	
+	*	return $this->render('admin/product/create-product-form-sf.html.twig', [
+	*		'productForm' => $productForm->createView()
+	*	]);
+	*}
+	**/
 
 }
