@@ -8,6 +8,7 @@ use App\Entity\Product;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -69,10 +70,19 @@ class AdminProductController extends AbstractController {
 		
 		$product = $productRepository->find($id);
 
-		$entityManager->remove($product);
-		$entityManager->flush();
+		if(!$product) {
+			return $this->redirectToRoute('admin_404');
+		}
 
-		$this->addFlash('success', 'Produit supprimé !');
+		try {
+			$entityManager->remove($product);
+			$entityManager->flush();
+
+			$this->addFlash('success', 'Produit supprimé !');
+
+		} catch(Exception $exception) {
+			$this->addFlash('error', 'Impossible de supprimer le produit');
+		}
 
 		return $this->redirectToRoute('admin-list-products');
 	}
