@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminUserController extends AbstractController {
 
-	#[Route(path: '/admin/create-user', name: 'admin-create-user')]
+	#[Route(path: '/admin/create-user', name: 'admin-create-user', methods: ['GET', 'POST'])]
 	public function displayCreateUser(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response{
 
 		if ($request->isMethod('POST')) {
@@ -60,7 +60,7 @@ class AdminUserController extends AbstractController {
 	}
 
 
-	#[Route(path: '/admin/list-admins', name: 'admin-list-admins')]
+	#[Route(path: '/admin/list-admins', name: 'admin-list-admins', methods: ['GET'])]
 	public function displayListAdmins(UserRepository $userRepository): Response {
 
 		$users = $userRepository->findAll();

@@ -3,21 +3,19 @@
 
 namespace App\Controller\admin;
 
-
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\BrowserKit\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AdminPageController extends AbstractController {
 
 
-    #[Route('/admin/404', Name: 'admin_404')]
-    public function displayAdmin404(): Response
-    {
-        $html = $this->renderView('admin/404.html.twig');
+	#[Route('/admin/404', name: 'admin_404')]
+	public function displayAdmin404(): Response
+	{
+		$html = $this->renderView('admin/404.html.twig');
+		
+		return new Response($html, '404');
+	}
 
-        return new Response($html,'404');
-    }
-
-    
 }
