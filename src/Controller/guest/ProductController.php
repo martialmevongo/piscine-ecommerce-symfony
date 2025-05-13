@@ -25,6 +25,10 @@ class ProductController extends AbstractController {
 		
 		$product = $productRepository->find($id);
 
+		if(!$product) {
+			return $this->redirectToRoute("404");
+		}
+
 		return $this->render('guest/product/details-product.html.twig', [
 			'product' => $product
 		]);
