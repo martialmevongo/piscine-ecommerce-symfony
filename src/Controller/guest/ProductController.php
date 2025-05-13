@@ -38,13 +38,15 @@ class ProductController extends AbstractController {
 	}
 
 	#[Route(path: '/resultats-recherche', name:'product-search-results', methods: ['GET'])]
-	public function displayResultsSearchProducts(Request $request) {
+	public function displayResultsSearchProducts(Request $request, ProductRepository $productRepository) {
 		
 		$search = $request->query->get('search');
 
-		dd($search);
+		$productsFound = $productRepository->findByTitleContain($search);
 
+		dd($productsFound);
 
+		// faire une requête select dans la table product avec le crière de recherche
 
 	}
 
