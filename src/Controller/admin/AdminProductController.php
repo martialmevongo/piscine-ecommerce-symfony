@@ -11,13 +11,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AdminProductController extends AbstractController {
 
 
 	#[Route('/admin/create-product', name: 'admin-create-product')]
-	public function displayCreateProduct(CategoryRepository $categoryRepository, Request $request, EntityManagerInterface $entityManager) {
+	public function displayCreateProduct(CategoryRepository $categoryRepository, Request $request, EntityManagerInterface $entityManager): Response {
 
 		if ($request->isMethod('POST')) {
 
@@ -39,7 +40,11 @@ class AdminProductController extends AbstractController {
 
 				$entityManager->persist($product);
 				$entityManager->flush();
-			} catch (\Exception $exception) {
+
+				$this->addFlash('success', 'Produit créé');
+
+				return $this->redirectToRoute('admin-list-products');
+			} catch (Exception $exception) {
 				$this->addFlash('error', $exception->getMessage());
 			}
 
@@ -55,7 +60,7 @@ class AdminProductController extends AbstractController {
 
 
 	#[Route('/admin/list-products', name: 'admin-list-products')]
-	public function displayListProducts(ProductRepository $productRepository) {
+	public function displayListProducts(ProductRepository $productRepository): Response {
 
 		$products = $productRepository->findAll();
 
@@ -66,7 +71,7 @@ class AdminProductController extends AbstractController {
 
 
 	#[Route('/admin/delete-product/{id}', name:'admin-delete-product')]
-	public function deleteProduct($id, ProductRepository $productRepository, EntityManagerInterface $entityManager) {
+	public function deleteProduct(int $id, ProductRepository $productRepository, EntityManagerInterface $entityManager): Response {
 		
 		$product = $productRepository->find($id);
 
@@ -88,9 +93,13 @@ class AdminProductController extends AbstractController {
 	}
 
 	#[Route('/admin/update-product/{id}', name: 'admin-update-product')]
-	public function displayUpdateProduct($id, ProductRepository $productRepository, CategoryRepository $categoryRepository, Request $request, EntityManagerInterface $entityManager) {
+	public function displayUpdateProduct(int $id, ProductRepository $productRepository, CategoryRepository $categoryRepository, Request $request, EntityManagerInterface $entityManager): Response {
 
 		$product = $productRepository->find($id);
+
+		if(!$product) {
+			return $this->redirectToRoute('admin_404');
+		}
 
 		if ($request->isMethod('POST')) {
 
@@ -122,7 +131,7 @@ class AdminProductController extends AbstractController {
 
 				$entityManager->persist($product);
 				$entityManager->flush();
-			} catch (\Exception $exception) {
+			} catch (Exception $exception) {
 				$this->addFlash('error', $exception->getMessage());
 			}
 
