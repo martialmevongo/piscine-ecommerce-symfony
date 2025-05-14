@@ -40,7 +40,7 @@ class Product
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
-    public function __construct($title, $description, $price, $isPublished, $category) {
+    public function __construct($title, $description, $price, $isPublished, $category, string $imageNewName) {
 
         if (strlen($title) < 3) {
             throw new Exception('Le titre doit faire plus de 3 caractères');
@@ -52,6 +52,7 @@ class Product
         $this->price = $price;
         $this->isPublished = $isPublished;
         $this->category = $category;
+        $this->image = $imageNewName;
 
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();

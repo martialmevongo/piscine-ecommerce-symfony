@@ -10,6 +10,7 @@ use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,7 +19,7 @@ class AdminProductController extends AbstractController {
 
 
 	#[Route('/admin/create-product', name: 'admin-create-product', methods: ['GET', 'POST'])]
-	public function displayCreateProduct(CategoryRepository $categoryRepository, Request $request, EntityManagerInterface $entityManager): Response {
+	public function displayCreateProduct(CategoryRepository $categoryRepository, Request $request, EntityManagerInterface $entityManager, ParameterBagInterface $parameterBag): Response {
 
 		if ($request->isMethod('POST')) {
 
@@ -35,8 +36,23 @@ class AdminProductController extends AbstractController {
 
 			$category = $categoryRepository->find($categoryId);
 
+			// je récupère l'image dans le formulaire avec la propriété files
+			$image = $request->files->get('image');
+
+			// si une image a bien été envoyée
+			if ($image) {
+				// je créé un nouveau nom unique pour l'image et je rajoute l'extension
+				// originale de l'image (.jpg ou .png etc)
+				$imageNewName = uniqid() . '.' . $image->guessExtension();
+				// je déplace l'image dans le dossier /public/uploads (je récupère le chemin du dossier grâce à la classe parameterbag) 
+				// et je la renomme avec le nouveau nom
+				$image->move($parameterBag->get('kernel.project_dir').'/public/uploads', $imageNewName);
+			}
+
 			try {
-				$product = new Product($title, $description, $price, $isPublished, $category);
+				// j'envoie le nom de l'image au constructeur de product pour
+				// stocker le nom de l'image dans le produit
+				$product = new Product($title, $description, $price, $isPublished, $category, $imageNewName);
 
 				$entityManager->persist($product);
 				$entityManager->flush();
@@ -47,7 +63,6 @@ class AdminProductController extends AbstractController {
 			} catch (Exception $exception) {
 				$this->addFlash('error', $exception->getMessage());
 			}
-
 
 		}
 

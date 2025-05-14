@@ -2,45 +2,43 @@
 
 {% block main %}
 
-<h1>Créer un produit</h1>
+	<h1>Créer un produit</h1>
 
-<form method="POST">
-	<label for="title">Titre
-		<input type="text" name="title">
-	</label>
+	{# quand un formulaire contient des données normales + des fichiers (images etc) 
+	 il faut ajouter l'attribut enctype="multipart/form-data" au formulaire
+	#}
+	<form method="POST" enctype="multipart/form-data">
+		<label for="title">Titre
+			<input type="text" name="title">
+		</label>
 
-	<label for="description">Description
-		<input type="text" name="description">
-	</label>
+		<label for="description">Description
+			<input type="text" name="description">
+		</label>
 
-	<label for="price">Prix
-		<input type="number" name="price" step="0.01">
-	</label>
+		<label for="price">Prix
+			<input type="number" name="price">
+		</label>
 
-	<label for="is-published">Publié ?
-		<input type="checkbox" name="is-published">
-	</label>
+		<label for="is-published">Publié ?
+			<input type="checkbox" name="is-published">
+		</label>
 
-	<label for="created_at">Date de création
-		<input type="datetime-local" name="created_at">
-	</label>
-
-	<label for="category-id">Catégorie
 		<select name="category-id">
+
 			{% for category in categories %}
 				<option value="{{ category.id }}">{{ category.title }}</option>
 			{% endfor %}
+		
 		</select>
-	</label>
 
-	<label for="image">Image
-		<input type="file" name="image">
-	</label>
+		<label for="image">Image
+			<input type="file" name="image">
+		</label>
 
-	<button type="submit">Créer le produit</button>
+		<button type="submit">Créer le produit</button>
 
 
-	
-</form>
+	</form>
 
 {% endblock %}
